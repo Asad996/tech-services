@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Services — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+
+    /* ============================================================
+       THEME VARIABLES — edit colors here
+    ============================================================ */
+    :root {
+      --accent:   #e8c800;                  /* yellow — main accent          */
+      --black:    #0d0d0d;                  /* deep black fallback            */
+      --overlay:  rgba(0,0,0,0.72);         /* body overlay darkness          */
+      --s-dark:   rgba(0,0,0,0.70);         /* dark section bg                */
+      --s-mid:    rgba(0,0,0,0.60);         /* medium section bg              */
+      --glass:    rgba(255,255,255,0.06);   /* glass card surface             */
+      --border:   rgba(255,255,255,0.11);   /* card / section border          */
+      --white:    #f0ede8;                  /* warm white text                */
+      --muted:    #aaaaaa;                  /* muted gray text                */
+    }
+
+    /* ============================================================
+       RESET
+    ============================================================ */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    /* ============================================================
+       BODY + BACKGROUND IMAGE
+       ── change './theme.png' to your image path ──
+    ============================================================ */
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--white);
+      overflow-x: hidden;
+      background: url('./theme.png') center/cover fixed no-repeat;
+      background-color: var(--black);
+    }
+
+    /* Dark overlay above the image, below all content */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background: var(--overlay);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    nav, .ticker-wrap, .stats-bar, section, footer {
+      position: relative; z-index: 1;
+    }
+
+    /* ============================================================
+       SHARED HELPERS
+    ============================================================ */
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem,5vw,5.5rem);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: var(--white);
+    }
+
+    section { padding: 8rem 4rem; }
+
+    /* ============================================================
+       ANIMATIONS
+    ============================================================ */
+    @keyframes fadeUp  { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes spin    { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+    @keyframes ticker  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    .reveal {
+      opacity:0; transform:translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity:1; transform:none; }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:200;
+      display: flex; justify-content:space-between; align-items:center;
+      padding: 1.4rem 4rem;
+      background: rgba(8,8,8,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; letter-spacing: 0.12em;
+      color: var(--white); text-decoration: none;
+    }
+    .nav-logo span { color: var(--accent); }
+
+    .nav-links { display:flex; gap:2.5rem; list-style:none; }
+
+    .nav-links a {
+      color: var(--muted); text-decoration:none;
+      font-size: 0.82rem; letter-spacing:0.1em;
+      text-transform: uppercase; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      background: var(--accent) !important;
+      color: #000 !important;
+      padding: 0.5rem 1.3rem;
+      font-weight: 600 !important;
+      border-radius: 3px;
+    }
+    .nav-cta:hover { opacity:.85; }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 4rem; padding-top: 90px;
+      overflow: hidden;
+    }
+
+    .hero-bg-text {
+      position: absolute; bottom:-.1em; left:-.02em;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(8rem,18vw,20rem);
+      color: rgba(255,255,255,0.03);
+      pointer-events:none; line-height:1;
+      white-space:nowrap; user-select:none;
+    }
+
+    .hero-left { position:relative; z-index:2; }
+
+    .hero-tag {
+      display: inline-block;
+      font-size:.72rem; letter-spacing:.22em; text-transform:uppercase;
+      color: var(--accent); border: 1px solid var(--accent);
+      padding: .3rem 1rem; margin-bottom:2rem;
+      animation: fadeUp .8s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem,8vw,9rem);
+      line-height:.92; letter-spacing:.02em;
+      animation: fadeUp .8s .1s ease both;
+    }
+    .hero-title .outline { -webkit-text-stroke:2px var(--white); color:transparent; }
+
+    .hero-subtitle {
+      margin-top:2rem; font-size:1rem;
+      color:var(--muted); max-width:460px; line-height:1.75;
+      animation: fadeUp .8s .2s ease both;
+    }
+
+    .hero-tagline {
+      margin-top:1.2rem; font-style:italic;
+      color:var(--accent); font-size:1rem;
+      font-family:'Playfair Display',serif;
+      animation: fadeUp .8s .3s ease both;
+    }
+
+    .hero-btns {
+      margin-top:2.5rem; display:flex; gap:1rem;
+      animation: fadeUp .8s .4s ease both;
+    }
+
+    .btn-primary {
+      background:var(--accent); color:#000;
+      padding:.9rem 2.2rem; font-size:.88rem;
+      font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+      text-decoration:none; border-radius:3px;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-primary:hover { opacity:.85; transform:translateY(-2px); }
+
+    .btn-ghost {
+      border:1px solid var(--border); color:var(--white);
+      padding:.9rem 2.2rem; font-size:.88rem;
+      letter-spacing:.06em; text-transform:uppercase;
+      text-decoration:none; border-radius:3px;
+      transition: border-color .2s;
+    }
+    .btn-ghost:hover { border-color:var(--white); }
+
+    .hero-right {
+      position:relative; z-index:2;
+      display:flex; justify-content:center; align-items:center;
+    }
+
+    .hero-graphic {
+      width:380px; height:380px;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .hero-graphic img { width:100%; height:100%; object-fit:contain; }
+
+    /* ============================================================
+       TICKER
+    ============================================================ */
+    .ticker-wrap {
+      overflow:hidden; background:var(--accent);
+      padding:.7rem 0; white-space:nowrap;
+    }
+    .ticker { display:inline-flex; animation: ticker 22s linear infinite; }
+    .ticker-item {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.05rem; letter-spacing:.1em;
+      color:#000; padding:0 2rem;
+    }
+    .ticker-item::after { content:'★'; margin-left:2rem; color:rgba(0,0,0,.35); }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    .stats-bar {
+      background: rgba(0,0,0,.65);
+      border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      padding:2rem 4rem;
+      display:grid; grid-template-columns:repeat(4,1fr); gap:2rem;
+    }
+    .stat-item { text-align:center; }
+    .stat-num {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:3rem; color:var(--accent); line-height:1;
+    }
+    .stat-label {
+      font-size:.72rem; letter-spacing:.1em;
+      text-transform:uppercase; color:var(--muted); margin-top:.3rem;
+    }
+
+    /* ============================================================
+       ABOUT
+    ============================================================ */
+    #about {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:6rem; align-items:center;
+      background: var(--s-dark);
+    }
+
+    .about-text p { color:var(--muted); font-size:1rem; line-height:1.85; margin-top:1.8rem; }
+    .about-text .highlight { color:var(--white); font-weight:500; }
+
+    .about-quote {
+      font-family:'Playfair Display',serif; font-style:italic;
+      font-size:1.9rem; line-height:1.45; color:var(--white);
+      padding-left:2rem; border-left:3px solid var(--accent);
+    }
+
+    /* ============================================================
+       SERVICES
+    ============================================================ */
+    #services { background: var(--s-mid); }
+
+    .services-header {
+      display:flex; justify-content:space-between; align-items:flex-end;
+      margin-bottom:4rem;
+    }
+    .services-header p { max-width:380px; color:var(--muted); line-height:1.7; }
+
+    .services-grid {
+      display:grid; grid-template-columns:repeat(3,1fr);
+      gap:1px; background:var(--border);
+    }
+
+    .service-card {
+      background: rgba(0,0,0,.55);
+      padding:3rem 2.5rem; position:relative; overflow:hidden; cursor:default;
+    }
+    .service-card::before {
+      content:''; position:absolute; inset:0;
+      background:var(--accent);
+      transform:scaleY(0); transform-origin:bottom;
+      transition:transform .4s cubic-bezier(.76,0,.24,1);
+    }
+    .service-card:hover::before { transform:scaleY(1); }
+    .service-card:hover .service-icon,
+    .service-card:hover .service-name,
+    .service-card:hover .service-desc { color:#000; }
+
+    .service-num {
+      position:absolute; top:2.5rem; right:2.5rem;
+      font-family:'Bebas Neue',sans-serif; font-size:4rem;
+      color:rgba(255,255,255,.04); line-height:1; z-index:0;
+      transition:color .3s;
+    }
+    .service-card:hover .service-num { color:rgba(0,0,0,.08); }
+
+    .service-icon  { font-size:2.4rem; margin-bottom:1.4rem; position:relative; z-index:1; transition:color .3s; }
+    .service-name  { font-family:'Bebas Neue',sans-serif; font-size:1.75rem; letter-spacing:.05em; position:relative; z-index:1; transition:color .3s; }
+    .service-desc  { margin-top:.7rem; font-size:.86rem; color:var(--muted); line-height:1.6; position:relative; z-index:1; transition:color .3s; }
+
+    /* ============================================================
+       PERFORMANCE MARKETING
+    ============================================================ */
+    #performance { background: var(--s-dark); }
+    .perf-header { margin-bottom:4rem; }
+
+    .perf-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; }
+
+    .perf-card {
+      background:var(--glass); border:1px solid var(--border);
+      border-radius:6px; padding:2.5rem;
+      transition: border-color .3s, transform .3s;
+    }
+    .perf-card:hover { border-color:var(--accent); transform:translateY(-4px); }
+
+    .perf-client { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:.8rem; }
+    .perf-card h3 { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:.05em; color:var(--white); }
+
+    .perf-metric-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; margin-top:1.5rem; }
+    .perf-metric .val { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; color:var(--white); line-height:1; }
+    .perf-metric .val.green { color:#4ade80; }
+    .perf-metric .lbl { font-size:.7rem; color:var(--muted); margin-top:.2rem; letter-spacing:.05em; text-transform:uppercase; }
+
+    /* ============================================================
+       COMPANIES
+    ============================================================ */
+    #companies { background: var(--s-mid); }
+    .companies-intro { max-width:560px; margin-bottom:4rem; }
+    .companies-intro p { color:var(--muted); margin-top:1rem; line-height:1.7; }
+
+    .companies-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1.2rem; }
+
+    .company-card {
+      background:var(--glass); border:1px solid var(--border);
+      border-radius:14px; padding:2rem 1rem;
+      display:flex; flex-direction:column; align-items:center;
+      justify-content:center; text-align:center;
+      min-height:135px; cursor:pointer;
+      position:relative; overflow:hidden;
+      transition: all .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .company-card::before {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(135deg,rgba(232,200,0,.1),rgba(255,107,53,.06));
+      opacity:0; transition:opacity .35s ease; border-radius:14px;
+    }
+    .company-card:hover {
+      transform:translateY(-8px) scale(1.04);
+      border-color:rgba(232,200,0,.5);
+      box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(232,200,0,.12);
+    }
+    .company-card:hover::before { opacity:1; }
+
+    .company-emoji {
+      font-size:2.1rem; margin-bottom:.6rem;
+      position:relative; z-index:1;
+      transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .company-card:hover .company-emoji { transform:scale(1.4) rotate(-5deg); }
+
+    .company-name {
+      font-size:.78rem; font-weight:600; letter-spacing:.06em;
+      color:var(--white); text-transform:uppercase;
+      position:relative; z-index:1;
+      transition:color .3s,transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .company-card:hover .company-name { color:var(--accent); transform:scale(1.08); }
+
+    .company-type {
+      font-size:.65rem; color:var(--muted); margin-top:.2rem;
+      letter-spacing:.08em; text-transform:uppercase;
+      position:relative; z-index:1;
+      transition:color .3s,transform .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .company-card:hover .company-type { color:#ff9955; transform:scale(1.08); }
+
+    /* ============================================================
+       SOCIAL MEDIA POSTS
+    ============================================================ */
+    #social { background: var(--s-dark); }
+    .social-header { margin-bottom:3rem; }
+
+    .social-tabs {
+      display:flex; gap:.5rem; margin-bottom:2.5rem;
+      border-bottom:1px solid var(--border); flex-wrap:wrap;
+    }
+    .tab-btn {
+      padding:.7rem 1.4rem; font-size:.78rem; letter-spacing:.1em;
+      text-transform:uppercase; background:none; border:none;
+      color:var(--muted); cursor:pointer;
+      border-bottom:2px solid transparent; margin-bottom:-1px;
+      transition:color .2s;
+    }
+    .tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+    .tab-btn:hover  { color:var(--white); }
+
+    .tab-content        { display:none; }
+    .tab-content.active { display:block; }
+
+    .posts-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+
+    .post-card {
+      background:var(--glass); border:1px solid var(--border);
+      border-radius:14px; overflow:hidden; cursor:pointer;
+      transition: all .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .post-card:hover {
+      transform:translateY(-8px) scale(1.03);
+      border-color:rgba(232,200,0,.5);
+      box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 20px rgba(232,200,0,.12);
+    }
+
+    .post-img { aspect-ratio:1; overflow:hidden; position:relative; }
+
+    /* pehle blur — hover pe clear */
+    .post-img img {
+      width:100%; height:100%; object-fit:cover; display:block;
+      transition: transform .4s ease, filter .4s ease;
+      filter: blur(5px) brightness(0.6);
+    }
+    .post-card:hover .post-img img {
+      transform: scale(1.08);
+      filter: blur(0px) brightness(1);
+    }
+
+    .post-meta {
+      padding:1rem 1.2rem; display:flex;
+      justify-content:space-between; align-items:center;
+      transition:background .3s;
+    }
+    .post-card:hover .post-meta { background:rgba(232,200,0,.06); }
+
+    .post-client { font-size:.8rem; font-weight:600; color:var(--white); transition:color .3s; }
+    .post-card:hover .post-client { color:var(--accent); }
+
+    .post-tag {
+      font-size:.63rem; letter-spacing:.1em; text-transform:uppercase;
+      color:var(--accent); background:rgba(232,200,0,.12);
+      padding:.2rem .6rem; border-radius:2px; transition:background .3s;
+    }
+    .post-card:hover .post-tag { background:rgba(232,200,0,.25); }
+
+    /* ============================================================
+       CONTACT
+    ============================================================ */
+    #contact { background:var(--s-mid); text-align:center; }
+    .contact-inner { max-width:680px; margin:0 auto; }
+
+    .contact-sub {
+      color:var(--muted); font-size:1rem; line-height:1.75;
+      margin-top:1.2rem; margin-bottom:3rem;
+    }
+
+    .contact-cards {
+      display:grid; grid-template-columns:repeat(2,1fr);
+      gap:1.5rem; margin-bottom:3rem; text-align:left;
+    }
+
+    .contact-card {
+      background:var(--glass); border:1px solid var(--border);
+      border-radius:14px; padding:2rem 1.8rem;
+      text-decoration:none; display:flex; flex-direction:column; gap:.4rem;
+      position:relative; overflow:hidden;
+      transition: all .35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .contact-card::before {
+      content:''; position:absolute; inset:0;
+      opacity:0; transition:opacity .35s ease; border-radius:14px;
+    }
+    .email-card::before    { background:linear-gradient(135deg,rgba(232,200,0,.1),rgba(232,200,0,.03)); }
+    .whatsapp-card::before { background:linear-gradient(135deg,rgba(37,211,102,.12),rgba(37,211,102,.03)); }
+
+    .contact-card:hover { transform:translateY(-8px) scale(1.03); }
+    .email-card:hover    { border-color:rgba(232,200,0,.5);   box-shadow:0 20px 40px rgba(0,0,0,.4),0 0 20px rgba(232,200,0,.15); }
+    .whatsapp-card:hover { border-color:rgba(37,211,102,.5); box-shadow:0 20px 40px rgba(0,0,0,.4),0 0 20px rgba(37,211,102,.15); }
+    .contact-card:hover::before { opacity:1; }
+
+    .contact-card-icon { font-size:2.2rem; position:relative; z-index:1; transition:transform .35s cubic-bezier(.34,1.56,.64,1); }
+    .contact-card:hover .contact-card-icon { transform:scale(1.35) rotate(-5deg); }
+
+    .contact-card-label {
+      font-size:.66rem; letter-spacing:.18em; text-transform:uppercase;
+      color:var(--muted); position:relative; z-index:1; transition:color .3s;
+    }
+    .email-card:hover .contact-card-label    { color:var(--accent); }
+    .whatsapp-card:hover .contact-card-label { color:#25d366; }
+
+    .contact-card-val {
+      font-size:.92rem; color:var(--white); font-weight:500;
+      position:relative; z-index:1; transition:color .3s;
+    }
+    .email-card:hover .contact-card-val    { color:var(--accent); }
+    .whatsapp-card:hover .contact-card-val { color:#25d366; }
+
+    .contact-card-arrow {
+      position:absolute; bottom:1.5rem; right:1.8rem;
+      font-size:1.1rem; opacity:0;
+      transform:translate(-6px,6px); transition:all .3s ease; z-index:1;
+    }
+    .email-card .contact-card-arrow    { color:var(--accent); }
+    .whatsapp-card .contact-card-arrow { color:#25d366; }
+    .contact-card:hover .contact-card-arrow { opacity:1; transform:translate(0,0); }
+
+    .contact-cta {
+      display:inline-flex; align-items:center; gap:.75rem;
+      background:var(--accent); color:#000;
+      padding:1rem 3rem; font-size:.88rem; font-weight:600;
+      letter-spacing:.08em; text-transform:uppercase;
+      text-decoration:none; border-radius:3px;
+      transition:opacity .2s,transform .2s;
+    }
+    .contact-cta:hover { opacity:.85; transform:translateY(-2px); }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background:rgba(0,0,0,.9); border-top:1px solid var(--border);
+      padding:2.5rem 4rem; display:flex;
+      justify-content:space-between; align-items:center;
+    }
+    .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:.1em; color:var(--white); }
+    .footer-logo span { color:var(--accent); }
+    .footer-copy { font-size:.76rem; color:var(--muted); }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width:900px) {
+      nav { padding:1rem 1.5rem; }
+      .nav-links { display:none; }
+      #hero { grid-template-columns:1fr; padding:2rem 1.5rem; padding-top:100px; }
+      .hero-right { display:none; }
+      .stats-bar { grid-template-columns:repeat(2,1fr); padding:2rem 1.5rem; }
+      section { padding:5rem 1.5rem; }
+      #about { grid-template-columns:1fr; gap:3rem; }
+      .services-grid { grid-template-columns:1fr; }
+      .services-header { flex-direction:column; align-items:flex-start; gap:1rem; }
+      .perf-grid { grid-template-columns:1fr; }
+      .companies-grid { grid-template-columns:repeat(3,1fr); }
+      .posts-grid { grid-template-columns:1fr; }
+      .contact-cards { grid-template-columns:1fr; }
+      footer { flex-direction:column; gap:1rem; text-align:center; padding:2rem 1.5rem; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">TECH <span>SERVICES</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#performance">Results</a></li>
+      <li><a href="#companies">Clients</a></li>
+      <li><a href="#social">Work</a></li>
+      <li><a class="nav-cta" href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg-text">TECH</div>
+    <div class="hero-left">
+      <div class="hero-tag">Full-Service Agency</div>
+      <h1 class="hero-title">
+        BUILD
+        <span class="outline">DIGITAL</span>
+         FUTURES
+      </h1>
+      <p class="hero-subtitle">
+        We are a full-service marketing and technology agency combining creativity, strategy, and innovation to help businesses grow and stand out.
+      </p>
+      <p class="hero-tagline">"Dream bigger. Move smarter. Grow stronger."</p>
+      <div class="hero-btns">
+        <a href="#services" class="btn-primary">Our Services</a>
+        <a href="#contact" class="btn-ghost">Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-graphic">
+        <!-- ── apna logo yahan lagao ── -->
+        <img src="./Black_Geometric_Tech_Business_Logo__1_-removebg-preview.png" alt="Tech Services Logo">
+      </div>
+    </div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="ticker-item">SEO Specialist</span>
+      <span class="ticker-item">Content Writing</span>
+      <span class="ticker-item">Web Development</span>
+      <span class="ticker-item">Social Media</span>
+      <span class="ticker-item">E-Commerce Store</span>
+      <span class="ticker-item">Ads Management</span>
+      <span class="ticker-item">Performance Marketing</span>
+      <span class="ticker-item">SEO Specialist</span>
+      <span class="ticker-item">Content Writing</span>
+      <span class="ticker-item">Web Development</span>
+      <span class="ticker-item">Social Media</span>
+      <span class="ticker-item">E-Commerce Store</span>
+      <span class="ticker-item">Ads Management</span>
+      <span class="ticker-item">Performance Marketing</span>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item reveal"><div class="stat-num">13+</div><div class="stat-label">Brands Served</div></div>
+    <div class="stat-item reveal"><div class="stat-num">12.5K</div><div class="stat-label">Organic Traffic / mo</div></div>
+    <div class="stat-item reveal"><div class="stat-num">6</div><div class="stat-label">Core Services</div></div>
+    <div class="stat-item reveal"><div class="stat-num">100%</div><div class="stat-label">Results-Driven</div></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-text reveal">
+      <div class="section-label">Who We Are</div>
+      <h2 class="section-title">About<br>Tech<br>Services</h2>
+      <p>At Tech Services, we don't just provide solutions — we <span class="highlight">build digital experiences that shape the future.</span></p>
+      <p>We are a full-service marketing and technology agency combining creativity, strategy, and innovation to help businesses grow and stand out.</p>
+      <p>Whether you're a startup or an established brand, we deliver tailored solutions that drive results and connect you with your audience.</p>
+    </div>
+    <div class="reveal">
+      <p class="about-quote">"We don't just provide solutions — we build digital experiences that shape the future."</p>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="services-header reveal">
+      <div>
+        <div class="section-label">What We Do</div>
+        <h2 class="section-title">Our<br>Services</h2>
+      </div>
+      <p>We offer a full range of services tailored to your business needs — whether you're just starting out or ready to scale up.</p>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-num">01</div><div class="service-icon">🔍</div>
+        <div class="service-name">SEO Specialist</div>
+        <p class="service-desc">Rank higher, get found faster. We optimize your digital presence to attract organic traffic that converts.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div><div class="service-icon">✍️</div>
+        <div class="service-name">Content Writing</div>
+        <p class="service-desc">Compelling, strategic content that tells your brand story and drives engagement across every channel.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div><div class="service-icon">💻</div>
+        <div class="service-name">Web Development</div>
+        <p class="service-desc">Fast, beautiful, functional websites built to convert visitors into loyal customers.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div><div class="service-icon">📱</div>
+        <div class="service-name">Social Media</div>
+        <p class="service-desc">Strategy-first social media management that builds communities and drives brand awareness.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05</div><div class="service-icon">🛒</div>
+        <div class="service-name">E-Commerce Store</div>
+        <p class="service-desc">End-to-end e-commerce solutions — from store setup to optimization for maximum sales.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06</div><div class="service-icon">📢</div>
+        <div class="service-name">Ads Management</div>
+        <p class="service-desc">Data-driven paid advertising that maximizes ROI across Meta, Google, and beyond.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERFORMANCE MARKETING -->
+  <section id="performance">
+    <div class="perf-header reveal">
+      <div class="section-label">Proven Results</div>
+      <h2 class="section-title">Performance<br>Marketing</h2>
+    </div>
+    <div class="perf-grid reveal">
+      <div class="perf-card">
+        <div class="perf-client">Client: Beige.pk</div>
+        <h3>Organic Growth Campaign</h3>
+        <div class="perf-metric-grid">
+          <div class="perf-metric"><div class="val green">5.7K</div><div class="lbl">Monthly Organic Traffic</div></div>
+          <div class="perf-metric"><div class="val">279</div><div class="lbl">Organic Keywords</div></div>
+          <div class="perf-metric"><div class="val">13</div><div class="lbl">Authority Score</div></div>
+          <div class="perf-metric"><div class="val green">829</div><div class="lbl">Backlinks</div></div>
+        </div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-client">Client: Beige Fragrances</div>
+        <h3>SEO Scale Campaign</h3>
+        <div class="perf-metric-grid">
+          <div class="perf-metric"><div class="val green">12.5K</div><div class="lbl">Monthly Organic Traffic</div></div>
+          <div class="perf-metric"><div class="val green">+22%</div><div class="lbl">Traffic Growth</div></div>
+          <div class="perf-metric"><div class="val">13</div><div class="lbl">Authority Score</div></div>
+          <div class="perf-metric"><div class="val green">3.4K</div><div class="lbl">Backlinks</div></div>
+        </div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-client">E-Commerce Analytics</div>
+        <h3>Conversion Optimization</h3>
+        <div class="perf-metric-grid">
+          <div class="perf-metric"><div class="val green">₨68M+</div><div class="lbl">Revenue Tracked</div></div>
+          <div class="perf-metric"><div class="val">192+</div><div class="lbl">Total Orders</div></div>
+          <div class="perf-metric"><div class="val green">4.80%</div><div class="lbl">Conversion Rate</div></div>
+          <div class="perf-metric"><div class="val">₨185</div><div class="lbl">Avg. Order Value</div></div>
+        </div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-client">Domain Authority Building</div>
+        <h3>Authority Growth</h3>
+        <div class="perf-metric-grid">
+          <div class="perf-metric"><div class="val green">7.2K</div><div class="lbl">Organic Search Traffic</div></div>
+          <div class="perf-metric"><div class="val green">598</div><div class="lbl">Backlinks Built</div></div>
+          <div class="perf-metric"><div class="val">12</div><div class="lbl">Authority Score</div></div>
+          <div class="perf-metric"><div class="val green">+22%</div><div class="lbl">Traffic YoY Growth</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPANIES -->
+  <section id="companies">
+    <div class="companies-intro reveal">
+      <div class="section-label">Our Clients</div>
+      <h2 class="section-title">Work With<br>Companies</h2>
+      <p>Trusted by startups and established brands across Pakistan and beyond — fashion, food, tech, and more.</p>
+    </div>
+    <div class="companies-grid reveal">
+      <div class="company-card"><span class="company-emoji">🍑</span><div class="company-name">Peach Flask</div><div class="company-type">Lifestyle</div></div>
+      <div class="company-card"><span class="company-emoji">🏥</span><div class="company-name">RHFWA</div><div class="company-type">Healthcare</div></div>
+      <div class="company-card"><span class="company-emoji">👗</span><div class="company-name">Beige</div><div class="company-type">Fashion</div></div>
+      <div class="company-card"><span class="company-emoji">🎓</span><div class="company-name">Ideoversity</div><div class="company-type">Education</div></div>
+      <div class="company-card"><span class="company-emoji">💄</span><div class="company-name">Faiza Tasawar</div><div class="company-type">Beauty</div></div>
+      <div class="company-card"><span class="company-emoji">📊</span><div class="company-name">Virtual Tally</div><div class="company-type">Accounting</div></div>
+      <div class="company-card"><span class="company-emoji">🍕</span><div class="company-name">Cheese Factor</div><div class="company-type">F&amp;B</div></div>
+      <div class="company-card"><span class="company-emoji">💳</span><div class="company-name">Tarsil.pk</div><div class="company-type">Fintech</div></div>
+      <div class="company-card"><span class="company-emoji">✨</span><div class="company-name">Essentia</div><div class="company-type">Wellness</div></div>
+      <div class="company-card"><span class="company-emoji">🎨</span><div class="company-name">Artisans Markee</div><div class="company-type">Crafts</div></div>
+      <div class="company-card"><span class="company-emoji">🪵</span><div class="company-name">Tanbark Leather</div><div class="company-type">Fashion</div></div>
+      <div class="company-card"><span class="company-emoji">🪡</span><div class="company-name">Dandy Designs</div><div class="company-type">Fashion</div></div>
+      <div class="company-card"><span class="company-emoji">🎓</span><div class="company-name">Dandy School</div><div class="company-type">Education</div></div>
+    </div>
+  </section>
+
+  <!-- SOCIAL MEDIA POSTS -->
+  <section id="social">
+    <div class="social-header reveal">
+      <div class="section-label">Creative Work</div>
+      <h2 class="section-title">Social Media<br>Posts</h2>
+    </div>
+    <div class="social-tabs reveal">
+      <button class="tab-btn active" onclick="switchTab(event,'beige')">Beige</button>
+      <button class="tab-btn" onclick="switchTab(event,'fragrance')">Beige Fragrances</button>
+      <button class="tab-btn" onclick="switchTab(event,'dandy')">Dandy Designs</button>
+      <button class="tab-btn" onclick="switchTab(event,'school')">Dandy School</button>
+      <button class="tab-btn" onclick="switchTab(event,'cheese')">Cheese Factor</button>
+      <button class="tab-btn" onclick="switchTab(event,'tanbark')">Tanbark</button>
+    </div>
+
+    <div id="tab-beige" class="tab-content active">
+      <div class="posts-grid">
+        <div class="post-card"><div class="post-img"><img src="./1.png" alt="Pearl Poetry Luxe Collection"></div><div class="post-meta"><span class="post-client">Beige</span><span class="post-tag">Fashion</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./2.png" alt="Beige Luxe Collection"></div><div class="post-meta"><span class="post-client">Beige</span><span class="post-tag">E-Commerce</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./3.png" alt="Discover Your Signature Look"></div><div class="post-meta"><span class="post-client">Beige</span><span class="post-tag">Social Media</span></div></div>
+      </div>
+    </div>
+
+    <div id="tab-fragrance" class="tab-content">
+      <div class="posts-grid">
+        <div class="post-card"><div class="post-img"><img src="./4.png" alt="Mandarin Jasmine Product"></div><div class="post-meta"><span class="post-client">Beige Fragrances</span><span class="post-tag">Product</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./5.png" alt="Mandarin Jasmine Lifestyle"></div><div class="post-meta"><span class="post-client">Beige Fragrances</span><span class="post-tag">Lifestyle</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./6.png" alt="Smell Fruity Campaign"></div><div class="post-meta"><span class="post-client">Beige Fragrances</span><span class="post-tag">Campaign</span></div></div>
+      </div>
+    </div>
+
+    <div id="tab-dandy" class="tab-content">
+      <div class="posts-grid">
+        <div class="post-card"><div class="post-img"><img src="./7.png" alt="Men Formal Collection"></div><div class="post-meta"><span class="post-client">Dandy Designs</span><span class="post-tag">Fashion</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./8.png" alt="Menswear Editorial"></div><div class="post-meta"><span class="post-client">Dandy Designs</span><span class="post-tag">Editorial</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./9.png" alt="Fabric Showcase"></div><div class="post-meta"><span class="post-client">Dandy Designs</span><span class="post-tag">Product</span></div></div>
+      </div>
+    </div>
+
+    <div id="tab-school" class="tab-content">
+      <div class="posts-grid">
+        <div class="post-card"><div class="post-img"><img src="./10.png" alt="Fashion Career"></div><div class="post-meta"><span class="post-client">Dandy School</span><span class="post-tag">Education</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./11.png" alt="2.5 Years Diploma"></div><div class="post-meta"><span class="post-client">Dandy School</span><span class="post-tag">Program</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./12.png" alt="Great Design"></div><div class="post-meta"><span class="post-client">Dandy School</span><span class="post-tag">Branding</span></div></div>
+      </div>
+    </div>
+
+    <div id="tab-cheese" class="tab-content">
+      <div class="posts-grid">
+        <div class="post-card"><div class="post-img"><img src="./13.png" alt="Deep Dish Pizza"></div><div class="post-meta"><span class="post-client">Cheese Factor</span><span class="post-tag">Promotion</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./14.png" alt="Delivery Offer"></div><div class="post-meta"><span class="post-client">Cheese Factor</span><span class="post-tag">Offer</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./15.png" alt="Foot Long Pizza"></div><div class="post-meta"><span class="post-client">Cheese Factor</span><span class="post-tag">Campaign</span></div></div>
+      </div>
+    </div>
+
+    <div id="tab-tanbark" class="tab-content">
+      <div class="posts-grid">
+        <div class="post-card"><div class="post-img"><img src="./16.png" alt="Tanbark Premium"></div><div class="post-meta"><span class="post-client">Tanbark</span><span class="post-tag">Leather</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./17.png" alt="Artisan Craftsmanship"></div><div class="post-meta"><span class="post-client">Tanbark</span><span class="post-tag">Brand</span></div></div>
+        <div class="post-card"><div class="post-img"><img src="./18.png" alt="Heritage Leather"></div><div class="post-meta"><span class="post-client">Tanbark</span><span class="post-tag">Campaign</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="reveal">
+        <div class="section-label">Get In Touch</div>
+        <h2 class="section-title">Let's Work<br>Together</h2>
+        <p class="contact-sub">Ready to grow your brand? Whether you're a startup or an established business, we're here to build something great together.</p>
+      </div>
+      <div class="contact-cards reveal">
+        <a href="mailto:support.techservices0@gmail.com" class="contact-card email-card">
+          <div class="contact-card-icon">📧</div>
+          <div class="contact-card-label">Email Us</div>
+          <div class="contact-card-val">support.techservices0@gmail.com</div>
+          <div class="contact-card-arrow">↗</div>
+        </a>
+        <a href="https://wa.me/923228474467" target="_blank" class="contact-card whatsapp-card">
+          <div class="contact-card-icon">💬</div>
+          <div class="contact-card-label">WhatsApp</div>
+          <div class="contact-card-val">+92 322 8474467</div>
+          <div class="contact-card-arrow">↗</div>
+        </a>
+      </div>
+      <a href="mailto:support.techservices0@gmail.com" class="contact-cta reveal">
+        Send Us a Message →
+      </a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">TECH <span>SERVICES</span></div>
+    <div class="footer-copy">© 2025 Tech Services. All rights reserved.</div>
+  </footer>
+
+  <script>
+    function switchTab(e, id) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+      document.getElementById('tab-' + id).classList.add('active');
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
