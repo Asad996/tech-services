@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://techservices.blog/sitemap.xml
