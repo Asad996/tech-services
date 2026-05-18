@@ -9,135 +9,182 @@
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Playfair+Display:wght@700&display=swap"
     rel="stylesheet">
   <style>
+    /* ─── FLOATING SOCIAL BUTTONS ─── */
+    .float-socials {
+      position: fixed;
+      bottom: 2rem;
+      right: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      z-index: 200;
+    }
 
-/* ─── FLOATING SOCIAL BUTTONS ─── */
-.float-socials {
-  position: fixed;
-  bottom: 2rem;
-  right: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  z-index: 200;
-}
+    .float-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
 
-.float-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-}
+    /* Tooltip */
+    .float-tooltip {
+      background: #fff;
+      color: #000;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      white-space: nowrap;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
 
-/* Tooltip */
-.float-tooltip {
-  background: #fff;
-  color: #000;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  padding: 0.35rem 0.85rem;
-  border-radius: 20px;
-  white-space: nowrap;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  pointer-events: none;
-}
+    .float-item:hover .float-tooltip {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-.float-item:hover .float-tooltip {
-  opacity: 1;
-  transform: translateY(0);
-}
+    /* Main button */
+    .float-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #fff;
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-/* Main button */
-.float-btn {
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: #fff;
-  position: relative;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
+    .float-btn svg {
+      width: 26px;
+      height: 26px;
+      position: relative;
+      z-index: 1;
+    }
 
-.float-btn svg {
-  width: 26px;
-  height: 26px;
-  position: relative;
-  z-index: 1;
-}
+    /* Individual colors + shadows */
+    .float-btn.facebook {
+      background: #1877f2;
+      box-shadow: 0 4px 20px rgba(24, 119, 242, 0.5);
+      animation: bounce 2.5s ease infinite;
+      animation-delay: 0s;
+    }
 
-/* Individual colors + shadows */
-.float-btn.facebook {
-  background: #1877f2;
-  box-shadow: 0 4px 20px rgba(24,119,242,0.5);
-  animation: bounce 2.5s ease infinite;
-  animation-delay: 0s;
-}
+    .float-btn.instagram {
+      background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
+      box-shadow: 0 4px 20px rgba(221, 42, 123, 0.5);
+      animation: bounce 2.5s ease infinite;
+      animation-delay: 0.4s;
+    }
 
-.float-btn.instagram {
-  background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af);
-  box-shadow: 0 4px 20px rgba(221,42,123,0.5);
-  animation: bounce 2.5s ease infinite;
-  animation-delay: 0.4s;
-}
+    .float-btn.whatsapp {
+      background: #25d366;
+      box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+      animation: bounce 2.5s ease infinite;
+      animation-delay: 0.8s;
+    }
 
-.float-btn.whatsapp {
-  background: #25d366;
-  box-shadow: 0 4px 20px rgba(37,211,102,0.5);
-  animation: bounce 2.5s ease infinite;
-  animation-delay: 0.8s;
-}
+    /* Stop bounce on hover, scale up instead */
+    .float-btn:hover {
+      transform: scale(1.12) !important;
+      animation: none !important;
+    }
 
-/* Stop bounce on hover, scale up instead */
-.float-btn:hover {
-  transform: scale(1.12) !important;
-  animation: none !important;
-}
+    .float-btn.facebook:hover {
+      box-shadow: 0 6px 28px rgba(24, 119, 242, 0.75);
+    }
 
-.float-btn.facebook:hover  { box-shadow: 0 6px 28px rgba(24,119,242,0.75); }
-.float-btn.instagram:hover { box-shadow: 0 6px 28px rgba(221,42,123,0.75); }
-.float-btn.whatsapp:hover  { box-shadow: 0 6px 28px rgba(37,211,102,0.75); }
+    .float-btn.instagram:hover {
+      box-shadow: 0 6px 28px rgba(221, 42, 123, 0.75);
+    }
 
-/* Ping rings — color matched per button */
-.float-btn::before,
-.float-btn::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  animation: ping 2.5s ease-out infinite;
-  z-index: 0;
-}
+    .float-btn.whatsapp:hover {
+      box-shadow: 0 6px 28px rgba(37, 211, 102, 0.75);
+    }
 
-.float-btn::after { animation-delay: 0.6s; }
+    /* Ping rings — color matched per button */
+    .float-btn::before,
+    .float-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      animation: ping 2.5s ease-out infinite;
+      z-index: 0;
+    }
 
-.facebook::before { background: rgba(24,119,242,0.35);  animation-delay: 0s; }
-.facebook::after  { background: rgba(24,119,242,0.2);   animation-delay: 0.6s; }
+    .float-btn::after {
+      animation-delay: 0.6s;
+    }
 
-.instagram::before { background: rgba(221,42,123,0.35); animation-delay: 0.4s; }
-.instagram::after  { background: rgba(221,42,123,0.2);  animation-delay: 1s; }
+    .facebook::before {
+      background: rgba(24, 119, 242, 0.35);
+      animation-delay: 0s;
+    }
 
-.whatsapp::before { background: rgba(37,211,102,0.35);  animation-delay: 0.8s; }
-.whatsapp::after  { background: rgba(37,211,102,0.2);   animation-delay: 1.4s; }
+    .facebook::after {
+      background: rgba(24, 119, 242, 0.2);
+      animation-delay: 0.6s;
+    }
 
-/* Bounce */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  30%       { transform: translateY(-8px); }
-  60%       { transform: translateY(-4px); }
-}
+    .instagram::before {
+      background: rgba(221, 42, 123, 0.35);
+      animation-delay: 0.4s;
+    }
 
-/* Ping rings */
-@keyframes ping {
-  0%   { transform: scale(1); opacity: 0.8; }
-  100% { transform: scale(2.2); opacity: 0; }
-}
+    .instagram::after {
+      background: rgba(221, 42, 123, 0.2);
+      animation-delay: 1s;
+    }
+
+    .whatsapp::before {
+      background: rgba(37, 211, 102, 0.35);
+      animation-delay: 0.8s;
+    }
+
+    .whatsapp::after {
+      background: rgba(37, 211, 102, 0.2);
+      animation-delay: 1.4s;
+    }
+
+    /* Bounce */
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      30% {
+        transform: translateY(-8px);
+      }
+
+      60% {
+        transform: translateY(-4px);
+      }
+    }
+
+    /* Ping rings */
+    @keyframes ping {
+      0% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+
+      100% {
+        transform: scale(2.2);
+        opacity: 0;
+      }
+    }
 
 
     /* ============================================================
@@ -1332,12 +1379,21 @@
     <div class="about-text reveal">
       <div class="section-label">Who We Are</div>
       <h2 class="section-title">About<br>Tech<br>Services</h2>
-      <p>At Tech Services, we don't just provide solutions — we <span class="highlight">build digital experiences that
-          shape the future.</span></p>
-      <p>We are a full-service marketing and technology agency combining creativity, strategy, and innovation to help
-        businesses grow and stand out.</p>
-      <p>Whether you're a startup or an established brand, we deliver tailored solutions that drive results and connect
-        you with your audience.</p>
+
+      <p>
+        Tech Services is a Pakistan-based full-service digital marketing and web development agency helping startups
+        and established brands build a stronger online presence.
+      </p>
+
+      <p>
+        We combine performance-driven strategy with creative execution — delivering SEO, paid advertising, web
+        development, content, and social media management under one roof.
+      </p>
+
+      <p>
+        From Lahore to international markets, we work with brands that are serious about
+        <span class="highlight">growing digitally.</span>
+      </p>
     </div>
     <div class="reveal">
       <p class="about-quote">"We don't just provide solutions — we build digital experiences that shape the future."</p>
@@ -1351,49 +1407,68 @@
         <div class="section-label">What We Do</div>
         <h2 class="section-title">Our<br>Services</h2>
       </div>
-      <p>We offer a full range of services tailored to your business needs — whether you're just starting out or ready
-        to scale up.</p>
+      <p>We offer six core services designed to grow your digital
+        presence — whether you are launching your first website
+        or scaling an established brand in Pakistan.
+      </p>
     </div>
     <div class="services-grid reveal">
       <div class="service-card">
         <div class="service-num">01</div>
         <div class="service-icon">🔍</div>
         <div class="service-name">SEO Specialist</div>
-        <p class="service-desc">Rank higher, get found faster. We optimize your digital presence to attract organic
-          traffic that converts.</p>
+        <p class="service-desc">We help businesses across Pakistan rank higher on Google through on-page SEO, technical
+          audits, local
+          SEO, and link building. More visibility. More organic
+          traffic. More qualified leads — without paying per click.</p>
       </div>
       <div class="service-card">
         <div class="service-num">02</div>
         <div class="service-icon">✍️</div>
         <div class="service-name">Content Writing</div>
-        <p class="service-desc">Compelling, strategic content that tells your brand story and drives engagement across
-          every channel.</p>
+        <p class="service-desc">We produce SEO-optimized blog posts, website copy,
+          and brand content that ranks on search engines and
+          connects with real audiences. Every word is written with
+          both Google and your customer in mind.</p>
       </div>
       <div class="service-card">
         <div class="service-num">03</div>
         <div class="service-icon">💻</div>
         <div class="service-name">Web Development</div>
-        <p class="service-desc">Fast, beautiful, functional websites built to convert visitors into loyal customers.</p>
+        <p class="service-desc">We design and develop fast, mobile-friendly websites
+          using React JS, Node.js, and modern tech — built to
+          rank, built to convert. From business websites to full ecommerce stores, we deliver performance that matches
+          your ambition.
+        </p>
       </div>
       <div class="service-card">
         <div class="service-num">04</div>
         <div class="service-icon">📱</div>
         <div class="service-name">Social Media</div>
-        <p class="service-desc">Strategy-first social media management that builds communities and drives brand
-          awareness.</p>
+        <p class="service-desc">We manage your Facebook and Instagram presence with
+          a content-first strategy — scroll-stopping creatives,
+          consistent posting, and community engagement that
+          turns followers into buyers.</p>
       </div>
       <div class="service-card">
         <div class="service-num">05</div>
         <div class="service-icon">🛒</div>
         <div class="service-name">E-Commerce Store</div>
-        <p class="service-desc">End-to-end e-commerce solutions — from store setup to optimization for maximum sales.
+        <p class="service-desc">We build and optimize online stores end-to-end — from
+          setup and payment integration to product SEO and
+          conversion rate optimization. Our e-commerce clients
+          have tracked over ₨68M in revenue through stores we manage.
         </p>
       </div>
       <div class="service-card">
         <div class="service-num">06</div>
         <div class="service-icon">📢</div>
         <div class="service-name">Ads Management</div>
-        <p class="service-desc">Data-driven paid advertising that maximizes ROI across Meta, Google, and beyond.</p>
+        <p class="service-desc">We run data-driven Meta (Facebook & Instagram) and Google Ads campaigns focused on one
+          thing: ROI. From
+          audience targeting to creative testing to budget scaling,
+          every campaign is built to generate real returns.
+        </p>
       </div>
     </div>
   </section>
@@ -1501,7 +1576,10 @@
     <div class="companies-intro reveal">
       <div class="section-label">Our Clients</div>
       <h2 class="section-title">Work With<br>Companies</h2>
-      <p>Trusted by startups and established brands across Pakistan and beyond — fashion, food, tech, and more.</p>
+      <p>We have partnered with 13+ brands across Pakistan —
+        spanning fashion, healthcare, food & beverage, fintech,
+        education, and wellness. Every client gets a tailored
+        strategy, not a template.</p>
     </div>
     <div class="companies-grid reveal">
       <div class="company-card"><span class="company-emoji">🍑</span>
@@ -1597,17 +1675,20 @@
     <div id="tab-fragrance" class="tab-content">
       <div class="posts-grid">
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975127/4_czshdw.webp" alt="Mandarin Jasmine Product" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975127/4_czshdw.webp"
+              alt="Mandarin Jasmine Product" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Beige Fragrances</span><span class="post-tag">Product</span>
           </div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975125/5_fnpvh3.webp" alt="Mandarin Jasmine Lifestyle" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975125/5_fnpvh3.webp"
+              alt="Mandarin Jasmine Lifestyle" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Beige Fragrances</span><span
               class="post-tag">Lifestyle</span></div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975123/6_puvycj.webp" alt="Smell Fruity Campaign" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975123/6_puvycj.webp"
+              alt="Smell Fruity Campaign" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Beige Fragrances</span><span class="post-tag">Campaign</span>
           </div>
         </div>
@@ -1617,17 +1698,20 @@
     <div id="tab-dandy" class="tab-content">
       <div class="posts-grid">
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975121/7_pqjtdt.webp" alt="Men Formal Collection" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975121/7_pqjtdt.webp"
+              alt="Men Formal Collection" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Dandy Designs</span><span class="post-tag">Fashion</span>
           </div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975119/8_f5mrjh.webp" alt="Menswear Editorial" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975119/8_f5mrjh.webp"
+              alt="Menswear Editorial" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Dandy Designs</span><span class="post-tag">Editorial</span>
           </div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975117/9_a1f56x.webp" alt="Fabric Showcase" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975117/9_a1f56x.webp"
+              alt="Fabric Showcase" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Dandy Designs</span><span class="post-tag">Product</span>
           </div>
         </div>
@@ -1637,17 +1721,20 @@
     <div id="tab-school" class="tab-content">
       <div class="posts-grid">
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975116/10_ngwize.webp" alt="Fashion Career" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975116/10_ngwize.webp"
+              alt="Fashion Career" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Dandy School</span><span class="post-tag">Education</span>
           </div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975114/11_eqxhil.webp" alt="2.5 Years Diploma" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975114/11_eqxhil.webp"
+              alt="2.5 Years Diploma" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Dandy School</span><span class="post-tag">Program</span>
           </div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975112/12_z3rbgs.webp" alt="Great Design" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975112/12_z3rbgs.webp"
+              alt="Great Design" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Dandy School</span><span class="post-tag">Branding</span>
           </div>
         </div>
@@ -1657,16 +1744,19 @@
     <div id="tab-cheese" class="tab-content">
       <div class="posts-grid">
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975111/13_ryp5rr.webp" alt="Deep Dish Pizza" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975111/13_ryp5rr.webp"
+              alt="Deep Dish Pizza" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Cheese Factor</span><span class="post-tag">Promotion</span>
           </div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975110/14_wjszmp.webp" alt="Delivery Offer" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975110/14_wjszmp.webp"
+              alt="Delivery Offer" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Cheese Factor</span><span class="post-tag">Offer</span></div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975148/15_psmtzg.webp" alt="Foot Long Pizza" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975148/15_psmtzg.webp"
+              alt="Foot Long Pizza" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Cheese Factor</span><span class="post-tag">Campaign</span>
           </div>
         </div>
@@ -1676,15 +1766,18 @@
     <div id="tab-tanbark" class="tab-content">
       <div class="posts-grid">
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975141/19_avwxht.webp" alt="Tanbark Premium" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975141/19_avwxht.webp"
+              alt="Tanbark Premium" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Tanbark</span><span class="post-tag">Leather</span></div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975139/20_jepwzv.webp" alt="Artisan Craftsmanship" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975139/20_jepwzv.webp"
+              alt="Artisan Craftsmanship" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Tanbark</span><span class="post-tag">Brand</span></div>
         </div>
         <div class="post-card">
-          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975137/21_fgwzep.webp" alt="Heritage Leather" loading="lazy"></div>
+          <div class="post-img"><img src="https://res.cloudinary.com/dcnqga6ln/image/upload/v1778975137/21_fgwzep.webp"
+              alt="Heritage Leather" loading="lazy"></div>
           <div class="post-meta"><span class="post-client">Tanbark</span><span class="post-tag">Campaign</span></div>
         </div>
       </div>
@@ -1696,9 +1789,11 @@
     <div class="contact-inner">
       <div class="reveal">
         <div class="section-label">Get In Touch</div>
-        <h2 class="section-title">Let's Work<br>Together</h2>
-        <p class="contact-sub">Ready to grow your brand? Whether you're a startup or an established business, we're here
-          to build something great together.</p>
+        <h2 class="section-title">Let's Build Your<br> Digital Presence</h2>
+        <p class="contact-sub">Whether you need a new website, want to rank on Google, or are ready to run your first
+          paid ad campaign —
+          Tech Services is your growth partner in Pakistan. Tell
+          us your goals and we'll build a strategy around them.</p>
       </div>
       <div class="contact-cards reveal">
         <a href="mailto:support.techservices0@gmail.com" class="contact-card email-card">
@@ -1721,45 +1816,51 @@
   </section>
 
 
-<!-- FLOATING SOCIAL BUTTONS -->
-<div class="float-socials">
+  <!-- FLOATING SOCIAL BUTTONS -->
+  <div class="float-socials">
 
-  <div class="float-item">
-    <div class="float-tooltip">Facebook</div>
-    <a href="https://www.facebook.com/share/1CRMQqqpyc/" target="_blank" class="float-btn facebook" aria-label="Facebook">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
-      </svg>
-    </a>
+    <div class="float-item">
+      <div class="float-tooltip">Facebook</div>
+      <a href="https://www.facebook.com/share/1CRMQqqpyc/" target="_blank" class="float-btn facebook"
+        aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="float-item">
+      <div class="float-tooltip">Instagram</div>
+      <a href="https://www.instagram.com/techservices.blog?igsh=OW5hcWZ0bmRpdzFn" target="_blank"
+        class="float-btn instagram" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+          <circle cx="12" cy="12" r="4" />
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+        </svg>
+      </a>
+    </div>
+
+    <div class="float-item">
+      <div class="float-tooltip">WhatsApp</div>
+      <a href="https://wa.me/923284744676" target="_blank" class="float-btn whatsapp" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.494a.5.5 0 0 0 .609.61l5.788-1.516A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.9 9.9 0 0 1-5.031-1.368l-.361-.214-3.735.979.995-3.63-.235-.374A9.861 9.861 0 0 1 2.1 12C2.1 6.533 6.533 2.1 12 2.1c5.467 0 9.9 4.433 9.9 9.9 0 5.467-4.433 9.9-9.9 9.9z" />
+        </svg>
+      </a>
+    </div>
+
   </div>
-
-  <div class="float-item">
-    <div class="float-tooltip">Instagram</div>
-    <a href="https://www.instagram.com/techservices.blog?igsh=OW5hcWZ0bmRpdzFn" target="_blank" class="float-btn instagram" aria-label="Instagram">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-        <circle cx="12" cy="12" r="4"/>
-        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
-      </svg>
-    </a>
-  </div>
-
-  <div class="float-item">
-    <div class="float-tooltip">WhatsApp</div>
-    <a href="https://wa.me/923284744676" target="_blank" class="float-btn whatsapp" aria-label="WhatsApp">
-      <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12 0C5.373 0 0 5.373 0 12c0 2.123.554 4.116 1.526 5.845L.057 23.494a.5.5 0 0 0 .609.61l5.788-1.516A11.95 11.95 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.9a9.9 9.9 0 0 1-5.031-1.368l-.361-.214-3.735.979.995-3.63-.235-.374A9.861 9.861 0 0 1 2.1 12C2.1 6.533 6.533 2.1 12 2.1c5.467 0 9.9 4.433 9.9 9.9 0 5.467-4.433 9.9-9.9 9.9z"/>
-      </svg>
-    </a>
-  </div>
-
-</div>
 
 
   <!-- FOOTER -->
   <footer>
     <div class="footer-logo">TECH <span>SERVICES</span></div>
-    <div class="footer-copy">© 2025 Tech Services. All rights reserved.</div>
+    <div class="footer-copy">© 2025 Tech Services. All rights reserved. Digital Marketing Agency | Web Development | SEO
+Services | Pakistan
+</div>
   </footer>
 
   <script>
